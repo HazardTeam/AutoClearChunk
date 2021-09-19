@@ -1,0 +1,19 @@
+---
+# AutoClearChunk Config
+
+# AutoClear Time
+# Seconds
+clear-interval: 600
+
+# Blacklist World
+# the name of the world you don't want to clear chunk
+blacklisted-worlds:
+  - "Lobby"
+
+# Message If Chunk Cleared
+# Tag
+# {COUNT} Chunk Cleared Count
+
+# Cleared Message
+message: "cleared total {COUNT} chunks"
+...
