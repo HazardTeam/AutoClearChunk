@@ -1,7 +1,9 @@
+---
 name: AutoClearChunk
 main: HazardTeam\AutoClearChunk\AutoClearChunk
-description: clear the chunk if there is no player in chunk
 version: 2.0.0
-api: 3.0.0
+api: [3.21.0]
 author: HazardTeam
-website: https://github.com/HazardTeam
+description: Auto clear the chunk if there is no player in chunk
+website: https://github.com/HazardTeam/AutoClearChunk
+...
