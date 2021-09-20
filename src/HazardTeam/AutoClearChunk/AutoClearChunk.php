@@ -4,9 +4,11 @@ declare(strict_types=1);
 namespace HazardTeam\AutoClearChunk;
 
 use pocketmine\plugin\PluginBase;
+use pocketmine\event\Listener;
+use pocketmine\event\entity\EntityLevelChangeEvent;
 use pocketmine\scheduler\ClosureTask;
 
-class AutoClearChunk extends PluginBase{
+class AutoClearChunk extends PluginBase implements Listener{
 	
 	private $worlds = [];
     
@@ -23,6 +25,19 @@ class AutoClearChunk extends PluginBase{
 				$this->clearChunk();
 			}
     	), 20 * $interval, 20 * $interval);
+    	$this->getServer()->getPluginManager()->registerEvents($this, $this);
+    }
+    
+    public function onLevelChange(EntityLevelChangeEvent $event) {
+        $entity = $event->getEntity();
+        if($entity instanceof Player) {
+            $name = $event->getOrigin()->getFolderName();
+			if(!in_array($name, $this->worlds)){
+				if(!in_array($name, $this->getConfig()->get("blacklisted-worlds"))){
+             	   $this->worlds[] = $name;
+             	}
+            }
+        }
     }
     
 	public function clearChunk(){
@@ -38,9 +53,9 @@ class AutoClearChunk extends PluginBase{
             		 }
              	}
 			}
-			$msg = $this->getConfig()->get("message") ?? "cleared total {COUNT} chunks";
-    		$this->getServer()->broadcastMessage(str_replace("{COUNT}", $cleared, $msg));
 		}
+		$msg = $this->getConfig()->get("message") ?? "cleared total {COUNT} chunks";
+    	$this->getServer()->broadcastMessage(str_replace("{COUNT}", $cleared, $msg));
 		return true;
 	}
 }
