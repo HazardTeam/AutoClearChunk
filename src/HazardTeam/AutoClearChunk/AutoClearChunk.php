@@ -5,6 +5,7 @@ namespace HazardTeam\AutoClearChunk;
 
 use pocketmine\plugin\PluginBase;
 use pocketmine\event\Listener;
+use pocketmine\Player;
 use pocketmine\event\entity\EntityLevelChangeEvent;
 use pocketmine\scheduler\ClosureTask;
 
@@ -41,9 +42,9 @@ class AutoClearChunk extends PluginBase implements Listener{
     }
     
 	public function clearChunk(){
+		$cleared = 0;
 		foreach($this->worlds as $world){
 			$worlds = $this->getServer()->getLevelByName($world);
-			$cleared = 0;
 			if($worlds !== null){
 				foreach($worlds->getChunks() as $chunk){
 					$count = count($worlds->getChunkPlayers($chunk->getX(), $chunk->getZ())); // check if the player is in the chunk
