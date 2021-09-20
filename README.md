@@ -1,37 +1,27 @@
-# General
+# AutoClearChunk
 
-Now you can clean chunks
-If there is no player in the chunk
-this can reduce server lag
+A PocketMine-MP plugin that can reduce or clean up the chunks in your world
 
-# Feature
+# Features
 - Custom Clear Message
 - Custom Clear Interval Time
-- Blacklist Worlds
+- Per world clear chunk
 
 # Config
 
 ``` YAML
-
 ---
----
-# AutoClearChunk Config
-
-# AutoClear Time
-# Seconds
+# The time used to run the clear chunk task.
+# Default: 600 seconds.
 clear-interval: 600
 
-# Blacklist World
-# the name of the world you don't want to clear chunk
+# The message used when successfully clearing the chunk.
+# Use {COUNT} to get chunk count cleared.
+message: "&aSuccessfully cleared &b{COUNT} chunks"
+
+# The name of the world folder that you don't want to clear the chunk.
 blacklisted-worlds:
   - "Lobby"
-
-# Message If Chunk Cleared
-# Tag
-# {COUNT} Chunk Cleared Count
-
-# Cleared Message
-message: "cleared total {COUNT} chunks"
 ...
 ```
 
