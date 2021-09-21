@@ -45,7 +45,7 @@ class AutoClearChunk extends PluginBase implements Listener
             return;
         }
 
-        if ($entity instanceof Player) {
+        if (!$entity instanceof Player) {
             return;
         }
 
