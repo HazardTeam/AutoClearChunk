@@ -35,14 +35,14 @@ class AutoClearChunk extends PluginBase implements Listener
         ), 20 * $interval, 20 * $interval);
 
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
-        
+
         UpdateNotifier::checkUpdate($this->getDescription()->getName(), $this->getDescription()->getVersion());
     }
-    
-    private function checkConfig() : void 
+
+    private function checkConfig(): void
     {
         $this->saveDefaultConfig();
-        
+
         foreach ([
             "clear-interval" => "integer",
             "message" => "string",
