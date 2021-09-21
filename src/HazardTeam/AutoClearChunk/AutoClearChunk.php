@@ -19,7 +19,7 @@ class AutoClearChunk extends PluginBase implements Listener
     {
         $this->saveDefaultConfig();
 
-        $interval = $this->getConfig()->get("clear-interval") ?? 600;
+        $interval = $this->getConfig()->get("clear-interval", 600);
 
         foreach (array_diff(scandir($this->getServer()->getDataPath() . "worlds"), ["..", "."]) as $levelName) {
             if (!in_array($levelName, $this->getConfig()->getAll()["blacklisted-worlds"])) {
@@ -73,7 +73,7 @@ class AutoClearChunk extends PluginBase implements Listener
             }
         }
 
-        $msg = TextFormat::colorize($this->getConfig()->get("message") ?? "Successfully cleared {COUNT} chunks");
+        $msg = TextFormat::colorize($this->getConfig()->get("message", "Successfully cleared {COUNT} chunks"));
         $this->getServer()->broadcastMessage(str_replace("{COUNT}", (string) $cleared, $msg));
     }
 }
