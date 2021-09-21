@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace HazardTeam\AutoClearChunk;
 
+use JackMD\UpdateNotifier\UpdateNotifier;
 use pocketmine\plugin\PluginBase;
 use pocketmine\Player;
 use pocketmine\event\Listener;
@@ -17,7 +18,7 @@ class AutoClearChunk extends PluginBase implements Listener
 
     public function onEnable(): void
     {
-        $this->saveDefaultConfig();
+        $this->checkConfig();
 
         $interval = $this->getConfig()->get("clear-interval", 600);
 
@@ -34,6 +35,23 @@ class AutoClearChunk extends PluginBase implements Listener
         ), 20 * $interval, 20 * $interval);
 
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
+        
+        UpdateNotifier::checkUpdate($this->getDescription()->getName(), $this->getDescription()->getVersion());
+    }
+    
+    private function checkConfig() : void 
+    {
+        $this->saveDefaultConfig();
+        
+        foreach ([
+            "clear-interval" => "integer",
+            "message" => "string",
+            "blacklisted-worlds" => "array"
+        ] as $option => $expectedType) {
+            if (($type = gettype($this->getConfig()->getNested($option))) != $expectedType) {
+                throw new \TypeError("Config error: Option ($option) must be of type $expectedType, $type was given");
+            }
+        }
     }
 
     public function onLevelChange(EntityLevelChangeEvent $event): void
@@ -73,7 +91,7 @@ class AutoClearChunk extends PluginBase implements Listener
             }
         }
 
-        $msg = TextFormat::colorize($this->getConfig()->get("message", "Successfully cleared {COUNT} chunks"));
-        $this->getServer()->broadcastMessage(str_replace("{COUNT}", (string) $cleared, $msg));
+        $message = TextFormat::colorize($this->getConfig()->get("message", "Successfully cleared {COUNT} chunks"));
+        $this->getServer()->broadcastMessage(str_replace("{COUNT}", (string) $cleared, $message));
     }
 }
