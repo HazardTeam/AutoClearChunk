@@ -20,84 +20,84 @@ use function str_replace;
 
 class AutoClearChunk extends PluginBase implements Listener
 {
-	private array $worlds = [];
+    private array $worlds = [];
 
-	public function onEnable(): void
-	{
-		$this->checkConfig();
+    public function onEnable(): void
+    {
+        $this->checkConfig();
 
-		$interval = $this->getConfig()->get("clear-interval", 600);
+        $interval = $this->getConfig()->get('clear-interval', 600);
 
-		foreach (array_diff(scandir($this->getServer()->getDataPath() . "worlds"), ["..", "."]) as $levelName) {
-			if (!in_array($levelName, $this->getConfig()->getAll()["blacklisted-worlds"], true)) {
-				$this->worlds[] = $levelName;
-			}
-		}
+        foreach (array_diff(scandir($this->getServer()->getDataPath() . 'worlds'), ['..', '.']) as $levelName) {
+            if (!in_array($levelName, $this->getConfig()->getAll()['blacklisted-worlds'], true)) {
+                $this->worlds[] = $levelName;
+            }
+        }
 
-		$this->getScheduler()->scheduleDelayedRepeatingTask(new ClosureTask(
-			function (int $currentTick): void {
-				$this->clearChunk();
-			}
-		), 20 * $interval, 20 * $interval);
+        $this->getScheduler()->scheduleDelayedRepeatingTask(new ClosureTask(
+            function (int $currentTick): void {
+                $this->clearChunk();
+            }
+        ), 20 * $interval, 20 * $interval);
 
-		$this->getServer()->getPluginManager()->registerEvents($this, $this);
+        $this->getServer()->getPluginManager()->registerEvents($this, $this);
 
-		UpdateNotifier::checkUpdate($this->getDescription()->getName(), $this->getDescription()->getVersion());
-	}
+        UpdateNotifier::checkUpdate($this->getDescription()->getName(), $this->getDescription()->getVersion());
+    }
 
-	private function checkConfig(): void
-	{
-		$this->saveDefaultConfig();
+    public function onLevelChange(EntityLevelChangeEvent $event): void
+    {
+        $entity = $event->getEntity();
+        $levelName = $event->getOrigin()->getFolderName();
 
-		foreach ([
-			"clear-interval" => "integer",
-			"message" => "string",
-			"blacklisted-worlds" => "array"
-		] as $option => $expectedType) {
-			if (($type = gettype($this->getConfig()->getNested($option))) != $expectedType) {
-				throw new \TypeError("Config error: Option ($option) must be of type $expectedType, $type was given");
-			}
-		}
-	}
+        if ($event->isCancelled()) {
+            return;
+        }
 
-	public function onLevelChange(EntityLevelChangeEvent $event): void
-	{
-		$entity = $event->getEntity();
-		$levelName = $event->getOrigin()->getFolderName();
+        if (!$entity instanceof Player) {
+            return;
+        }
 
-		if ($event->isCancelled()) {
-			return;
-		}
+        if (!in_array($levelName, $this->getConfig()->getAll()['blacklisted-worlds'], true)) {
+            $this->worlds[] = $levelName;
+        }
+    }
 
-		if (!$entity instanceof Player) {
-			return;
-		}
+    public function clearChunk(): void
+    {
+        $cleared = 0;
 
-		if (!in_array($levelName, $this->getConfig()->getAll()["blacklisted-worlds"], true)) {
-			$this->worlds[] = $levelName;
-		}
-	}
+        foreach ($this->worlds as $world) {
+            $worlds = $this->getServer()->getLevelByName($world);
 
-	public function clearChunk(): void
-	{
-		$cleared = 0;
+            if ($worlds !== null) {
+                foreach ($worlds->getChunks() as $chunk) {
+                    $count = count($worlds->getChunkPlayers($chunk->getX(), $chunk->getZ())); //Check if the player is in the chunk
 
-		foreach ($this->worlds as $world) {
-			$worlds = $this->getServer()->getLevelByName($world);
+                    if ($count === 0) {
+                        ++$cleared;
+                        $worlds->unloadChunk($chunk->getX(), $chunk->getZ());
+                    }
+                }
+            }
+        }
 
-			if ($worlds !== null) {
-				foreach ($worlds->getChunks() as $chunk) {
-					$count = count($worlds->getChunkPlayers($chunk->getX(), $chunk->getZ())); //Check if the player is in the chunk
+        $message = TextFormat::colorize($this->getConfig()->get('message', 'Successfully cleared {COUNT} chunks'));
+        $this->getServer()->broadcastMessage(str_replace('{COUNT}', (string) $cleared, $message));
+    }
 
-					if ($count === 0) {
-						$cleared += 1;
-						$worlds->unloadChunk($chunk->getX(), $chunk->getZ());
-					}
-				}
-			}
-		}
+    private function checkConfig(): void
+    {
+        $this->saveDefaultConfig();
 
-		$message = TextFormat::colorize($this->getConfig()->get("message", "Successfully cleared {COUNT} chunks"));
-		$this->getServer()->broadcastMessage(str_replace("{COUNT}", (string) $cleared, $message));
-	}
+        foreach ([
+            'clear-interval' => 'integer',
+            'message' => 'string',
+            'blacklisted-worlds' => 'array',
+        ] as $option => $expectedType) {
+            if (($type = gettype($this->getConfig()->getNested($option))) !== $expectedType) {
+                throw new \TypeError("Config error: Option ({$option}) must be of type {$expectedType}, {$type} was given");
+            }
+        }
+    }
 }
