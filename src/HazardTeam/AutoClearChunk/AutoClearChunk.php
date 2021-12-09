@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace HazardTeam\AutoClearChunk;
 
 use JackMD\UpdateNotifier\UpdateNotifier;
-use pocketmine\event\entity\EntityLevelChangeEvent;
+use pocketmine\event\entity\EntityTeleportEvent;
 use pocketmine\event\Listener;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\scheduler\ClosureTask;
 use pocketmine\utils\TextFormat;
@@ -35,7 +35,7 @@ class AutoClearChunk extends PluginBase implements Listener
         }
 
         $this->getScheduler()->scheduleDelayedRepeatingTask(new ClosureTask(
-            function (int $currentTick): void {
+            function (): void {
                 $this->clearChunk();
             }
         ), 20 * $interval, 20 * $interval);
@@ -45,7 +45,7 @@ class AutoClearChunk extends PluginBase implements Listener
         UpdateNotifier::checkUpdate($this->getDescription()->getName(), $this->getDescription()->getVersion());
     }
 
-    public function onLevelChange(EntityLevelChangeEvent $event): void
+    public function onLevelChange(EntityTeleportEvent $event): void
     {
         $entity = $event->getEntity();
         $levelName = $event->getOrigin()->getFolderName();
@@ -68,15 +68,15 @@ class AutoClearChunk extends PluginBase implements Listener
         $cleared = 0;
 
         foreach ($this->worlds as $world) {
-            $worlds = $this->getServer()->getLevelByName($world);
+            $worlds = $this->getServer()->getWorldManager()->getWorldByName($world);
 
             if ($worlds !== null) {
-                foreach ($worlds->getChunks() as $chunk) {
-                    $count = count($worlds->getChunkPlayers($chunk->getX(), $chunk->getZ())); //Check if the player is in the chunk
+                foreach ($worlds->getLoadedChunks() as $chunk) {
+                    $count = count($worlds->getChunkPlayers($chunk->getPosition()->getX(), $chunk->getPosition()->getZ())); //Check if the player is in the chunk
 
                     if ($count === 0) {
                         ++$cleared;
-                        $worlds->unloadChunk($chunk->getX(), $chunk->getZ());
+                        $worlds->unloadChunk($chunk->getPosition()->getX(), $chunk->getPosition()->getZ());
                     }
                 }
             }
