@@ -6,12 +6,11 @@ api: [4.0.0]
 author: HazardTeam
 description: Auto clear the chunk if there is no player in chunk
 website: https://github.com/HazardTeam/AutoClearChunk
-
 permissions:
- autoclearchunk.clearchunk:
-  default: op
-  description: "Permission for ClearChunk"
- autoclearchunk.clearchunkall:
-  default: op
-  description: "Permission for ClearAllChunk"
+  autoclearchunk.clearchunk:
+    default: op
+    description: Permission for ClearChunk.
+  autoclearchunk.clearchunkall:
+    default: op
+    description: Permission for ClearAllChunk.
 ...
