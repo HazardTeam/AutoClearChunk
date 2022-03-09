@@ -1,7 +1,7 @@
 ---
 name: AutoClearChunk
 main: HazardTeam\AutoClearChunk\AutoClearChunk
-version: 2.2.0
+version: 2.2.1
 api: [4.0.0]
 author: HazardTeam
 description: Auto clear the chunk if there is no player in chunk
