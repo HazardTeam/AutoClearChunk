@@ -1,13 +1,37 @@
----
-# The time used to run the clear chunk task.
-# Default: 600 seconds.
+# AutoClearChunk Configuration
+
+# Interval in seconds between each chunk clearing operation
+# Adjust this value based on how frequently you want the plugin to clear chunks.
+# Default: 600 (10 minutes)
 clear-interval: 600
 
-# The message used when successfully clearing the chunk.
-# Use {COUNT} to get chunk count cleared.
-message: "&aSuccessfully cleared &b{COUNT} chunks"
+# Message displayed when chunks are cleared using the ClearChunk command
+# Use %d placeholder for the number of cleared chunks and %s placeholder for the world name.
+# You can customize the message using color codes.
+# Default: "Successfully cleared %d chunks in world %s"
+clearchunk-message: "&aSuccessfully cleared %d chunks in world %s"
 
-# The name of the world folder that you don't want to clear the chunk.
+# Message broadcasted to all players when chunks are cleared using the ClearChunk command
+# Use %d placeholder for the number of cleared chunks and %s placeholder for the world name.
+# You can customize the message using color codes.
+# Default: "&e%d chunks have been cleared in world %s"
+clearchunk-broadcast-message: "&e%d chunks have been cleared in world %s"
+
+# Message displayed when chunks are cleared using the ClearAllChunk command
+# Use %d placeholder for the number of cleared chunks.
+# You can customize the message using color codes.
+# Default: "Successfully cleared %d chunks in all worlds"
+clearallchunk-message: "&aSuccessfully cleared %d chunks in all worlds"
+
+# Message broadcasted to all players when chunks are cleared using the ClearAllChunk command
+# Use %d placeholder for the number of cleared chunks.
+# You can customize the message using color codes.
+# Default: "&e[AutoClearChunk] %d chunks have been cleared in all worlds"
+clearallchunk-broadcast-message: "&e%d chunks have been cleared in all worlds"
+
+# List of worlds that are blacklisted and won't be cleared
+# Add the names of any worlds you want to exclude from the clearing process.
+# Default: []
 blacklisted-worlds:
-  - "Lobby"
-...
+  - your_world
+  - another_world
