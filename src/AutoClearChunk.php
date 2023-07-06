@@ -61,7 +61,7 @@ class AutoClearChunk extends PluginBase implements Listener {
 			return;
 		}
 
-			$worldsDirectory = new \DirectoryIterator($this->getServer()->getDataPath() . 'worlds');
+		$worldsDirectory = new \DirectoryIterator($this->getServer()->getDataPath() . 'worlds');
 		foreach ($worldsDirectory as $fileInfo) {
 			if (!$fileInfo->isDot() && $fileInfo->isDir()) {
 				$worldName = $fileInfo->getFilename();
