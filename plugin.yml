@@ -1,16 +1,15 @@
----
 name: AutoClearChunk
-main: HazardTeam\AutoClearChunk\AutoClearChunk
+main: hazardteam\autoclearchunk\AutoClearChunk
+src-namespace-prefix: hazardteam\autoclearchunk
 version: 2.2.1
-api: [4.0.0]
+api: [5.0.0]
 author: HazardTeam
-description: Auto clear the chunk if there is no player in chunk
+description: Auto clears chunks when there are no players present
 website: https://github.com/HazardTeam/AutoClearChunk
 permissions:
-  autoclearchunk.clearchunk:
+  autoclearchunk.command.clearchunk:
     default: op
-    description: Permission for ClearChunk.
-  autoclearchunk.clearchunkall:
+    description: Permission to use the ClearChunk command
+  autoclearchunk.command.clearallchunk:
     default: op
-    description: Permission for ClearAllChunk.
-...
+    description: Permission to use the ClearAllChunk command

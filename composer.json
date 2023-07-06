@@ -1,0 +1,32 @@
+{
+    "name": "hazardteam/autoclearchunk",
+    "description": "A PocketMine-MP plugin that automatically clears chunks in specified worlds at regular intervals.",
+    "license": "MIT",
+    "type": "project",
+    "require": {
+        "pocketmine/pocketmine-mp": "^5.0",
+        "latampmdevs/update-notifier": "dev-master"
+    },
+    "require-dev": {
+        "phpstan/extension-installer": "^1.3",
+        "phpstan/phpstan": "^1.10",
+        "phpstan/phpstan-strict-rules": "^1.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "HazardTeam/AutoClearChunk\\": "/src"
+        }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/LatamPMDevs/UpdateNotifier.git"
+        }
+    ],
+    "config": {
+        "allow-plugins": {
+            "phpstan/extension-installer": true
+        },
+        "sort-packages": true
+    }
+}
