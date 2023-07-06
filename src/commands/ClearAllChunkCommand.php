@@ -25,7 +25,7 @@ class ClearAllChunkCommand extends Command implements PluginOwned {
 		private AutoClearChunk $plugin
 	) {
 		parent::__construct('clearallchunk', 'Clears all unloaded chunks in all worlds');
-		$this->setPermission('autoclearchunk.clearchunkall');
+		$this->setPermission('autoclearchunk.command.clearallchunk');
 	}
 
 	public function execute(CommandSender $sender, string $commandLabel, array $args) : bool {

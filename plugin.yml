@@ -7,9 +7,9 @@ author: HazardTeam
 description: Auto clears chunks when there are no players present
 website: https://github.com/HazardTeam/AutoClearChunk
 permissions:
-  autoclearchunk.clearchunk:
+  autoclearchunk.command.clearchunk:
     default: op
     description: Permission to use the ClearChunk command
-  autoclearchunk.clearchunkall:
+  autoclearchunk.command.clearallchunk:
     default: op
     description: Permission to use the ClearAllChunk command
