@@ -197,7 +197,6 @@ class AutoClearChunk extends PluginBase implements Listener {
 					TextFormat::colorize($this->getClearAllChunkBroadcastMessage()),
 					$cleared
 				);
-				$this->getServer()->broadcastMessage($broadcastMessage);
 			})),
 			20 * $this->clearInterval,
 			20 * $this->clearInterval
