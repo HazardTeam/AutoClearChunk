@@ -175,16 +175,16 @@
         },
         {
             "name": "pocketmine/bedrock-block-upgrade-schema",
-            "version": "3.6.0",
+            "version": "4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pmmp/BedrockBlockUpgradeSchema.git",
-                "reference": "1496e275db5148cb96bdaa998115e5e31a5c1e4d"
+                "reference": "ebd768e5b202cae59b0a7057982e3a2f40ba1954"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pmmp/BedrockBlockUpgradeSchema/zipball/1496e275db5148cb96bdaa998115e5e31a5c1e4d",
-                "reference": "1496e275db5148cb96bdaa998115e5e31a5c1e4d",
+                "url": "https://api.github.com/repos/pmmp/BedrockBlockUpgradeSchema/zipball/ebd768e5b202cae59b0a7057982e3a2f40ba1954",
+                "reference": "ebd768e5b202cae59b0a7057982e3a2f40ba1954",
                 "shasum": ""
             },
             "type": "library",
@@ -195,9 +195,9 @@
             "description": "Schemas describing how to upgrade saved block data in older Minecraft: Bedrock Edition world saves",
             "support": {
                 "issues": "https://github.com/pmmp/BedrockBlockUpgradeSchema/issues",
-                "source": "https://github.com/pmmp/BedrockBlockUpgradeSchema/tree/3.6.0"
+                "source": "https://github.com/pmmp/BedrockBlockUpgradeSchema/tree/4.0.0"
             },
-            "time": "2024-02-28T19:25:25+00:00"
+            "time": "2024-04-05T16:02:20+00:00"
         },
         {
             "name": "pocketmine/bedrock-data",
@@ -429,25 +429,25 @@
         },
         {
             "name": "pocketmine/errorhandler",
-            "version": "0.6.0",
+            "version": "0.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pmmp/ErrorHandler.git",
-                "reference": "dae214a04348b911e8219ebf125ff1c5589cc878"
+                "reference": "cae94884368a74ece5294b9ff7fef18732dcd921"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pmmp/ErrorHandler/zipball/dae214a04348b911e8219ebf125ff1c5589cc878",
-                "reference": "dae214a04348b911e8219ebf125ff1c5589cc878",
+                "url": "https://api.github.com/repos/pmmp/ErrorHandler/zipball/cae94884368a74ece5294b9ff7fef18732dcd921",
+                "reference": "cae94884368a74ece5294b9ff7fef18732dcd921",
                 "shasum": ""
             },
             "require": {
                 "php": "^8.0"
             },
             "require-dev": {
-                "phpstan/phpstan": "0.12.99",
-                "phpstan/phpstan-strict-rules": "^0.12.2",
-                "phpunit/phpunit": "^9.5"
+                "phpstan/phpstan": "~1.10.3",
+                "phpstan/phpstan-strict-rules": "^1.0",
+                "phpunit/phpunit": "^9.5 || ^10.0 || ^11.0"
             },
             "type": "library",
             "autoload": {
@@ -462,9 +462,9 @@
             "description": "Utilities to handle nasty PHP E_* errors in a usable way",
             "support": {
                 "issues": "https://github.com/pmmp/ErrorHandler/issues",
-                "source": "https://github.com/pmmp/ErrorHandler/tree/0.6.0"
+                "source": "https://github.com/pmmp/ErrorHandler/tree/0.7.0"
             },
-            "time": "2022-01-08T21:05:46+00:00"
+            "time": "2024-04-02T18:29:54+00:00"
         },
         {
             "name": "pocketmine/locale-data",
@@ -669,16 +669,16 @@
         },
         {
             "name": "pocketmine/pocketmine-mp",
-            "version": "5.13.0",
+            "version": "5.14.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pmmp/PocketMine-MP.git",
-                "reference": "f193a990b0bae8892637cb7fb2bdf862c8a1a759"
+                "reference": "3590d84d035621373d2340cab50eff66e7a508ab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pmmp/PocketMine-MP/zipball/f193a990b0bae8892637cb7fb2bdf862c8a1a759",
-                "reference": "f193a990b0bae8892637cb7fb2bdf862c8a1a759",
+                "url": "https://api.github.com/repos/pmmp/PocketMine-MP/zipball/3590d84d035621373d2340cab50eff66e7a508ab",
+                "reference": "3590d84d035621373d2340cab50eff66e7a508ab",
                 "shasum": ""
             },
             "require": {
@@ -699,7 +699,7 @@
                 "ext-openssl": "*",
                 "ext-pcre": "*",
                 "ext-phar": "*",
-                "ext-pmmpthread": "^6.0.7",
+                "ext-pmmpthread": "^6.1.0",
                 "ext-reflection": "*",
                 "ext-simplexml": "*",
                 "ext-sockets": "*",
@@ -709,27 +709,27 @@
                 "ext-zlib": ">=1.2.11",
                 "php": "^8.1",
                 "php-64bit": "*",
-                "pocketmine/bedrock-block-upgrade-schema": "~3.6.0+bedrock-1.20.70",
+                "pocketmine/bedrock-block-upgrade-schema": "~4.0.0+bedrock-1.20.70",
                 "pocketmine/bedrock-data": "~2.9.0+bedrock-1.20.70",
                 "pocketmine/bedrock-item-upgrade-schema": "~1.8.0+bedrock-1.20.70",
                 "pocketmine/bedrock-protocol": "~29.0.0+bedrock-1.20.70",
                 "pocketmine/binaryutils": "^0.2.1",
                 "pocketmine/callback-validator": "^1.0.2",
                 "pocketmine/color": "^0.3.0",
-                "pocketmine/errorhandler": "^0.6.0",
+                "pocketmine/errorhandler": "^0.7.0",
                 "pocketmine/locale-data": "~2.19.0",
                 "pocketmine/log": "^0.4.0",
                 "pocketmine/math": "~1.0.0",
                 "pocketmine/nbt": "~1.0.0",
                 "pocketmine/netresearch-jsonmapper": "~v4.4.999",
-                "pocketmine/raklib": "^0.15.0",
-                "pocketmine/raklib-ipc": "^0.2.0",
+                "pocketmine/raklib": "~1.1.0",
+                "pocketmine/raklib-ipc": "~1.0.0",
                 "pocketmine/snooze": "^0.5.0",
                 "ramsey/uuid": "~4.7.0",
                 "symfony/filesystem": "~6.4.0"
             },
             "require-dev": {
-                "phpstan/phpstan": "1.10.60",
+                "phpstan/phpstan": "1.10.66",
                 "phpstan/phpstan-phpunit": "^1.1.0",
                 "phpstan/phpstan-strict-rules": "^1.2.0",
                 "phpunit/phpunit": "~10.3.0 || ~10.2.0 || ~10.1.0"
@@ -751,7 +751,7 @@
             "homepage": "https://pmmp.io",
             "support": {
                 "issues": "https://github.com/pmmp/PocketMine-MP/issues",
-                "source": "https://github.com/pmmp/PocketMine-MP/tree/5.13.0"
+                "source": "https://github.com/pmmp/PocketMine-MP/tree/5.14.1"
             },
             "funding": [
                 {
@@ -763,32 +763,32 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2024-03-13T14:59:21+00:00"
+            "time": "2024-04-05T17:41:27+00:00"
         },
         {
             "name": "pocketmine/raklib",
-            "version": "0.15.1",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pmmp/RakLib.git",
-                "reference": "79b7b4d1d7516dc6e322514453645ad9452b20ca"
+                "reference": "be2783be516bf6e2872ff5c81fb9048596617b97"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pmmp/RakLib/zipball/79b7b4d1d7516dc6e322514453645ad9452b20ca",
-                "reference": "79b7b4d1d7516dc6e322514453645ad9452b20ca",
+                "url": "https://api.github.com/repos/pmmp/RakLib/zipball/be2783be516bf6e2872ff5c81fb9048596617b97",
+                "reference": "be2783be516bf6e2872ff5c81fb9048596617b97",
                 "shasum": ""
             },
             "require": {
                 "ext-sockets": "*",
-                "php": "^8.0",
+                "php": "^8.1",
                 "php-64bit": "*",
                 "php-ipv6": "*",
                 "pocketmine/binaryutils": "^0.2.0",
                 "pocketmine/log": "^0.3.0 || ^0.4.0"
             },
             "require-dev": {
-                "phpstan/phpstan": "1.9.17",
+                "phpstan/phpstan": "1.10.1",
                 "phpstan/phpstan-strict-rules": "^1.0"
             },
             "type": "library",
@@ -804,32 +804,32 @@
             "description": "A RakNet server implementation written in PHP",
             "support": {
                 "issues": "https://github.com/pmmp/RakLib/issues",
-                "source": "https://github.com/pmmp/RakLib/tree/0.15.1"
+                "source": "https://github.com/pmmp/RakLib/tree/1.1.1"
             },
-            "time": "2023-03-07T15:10:34+00:00"
+            "time": "2024-03-04T14:02:14+00:00"
         },
         {
             "name": "pocketmine/raklib-ipc",
-            "version": "0.2.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pmmp/RakLibIpc.git",
-                "reference": "26ed56fa9db06e4ca6e8920c0ede2e01e219bb9c"
+                "reference": "ce632ef2c6743e71eddb5dc329c49af6555f90bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pmmp/RakLibIpc/zipball/26ed56fa9db06e4ca6e8920c0ede2e01e219bb9c",
-                "reference": "26ed56fa9db06e4ca6e8920c0ede2e01e219bb9c",
+                "url": "https://api.github.com/repos/pmmp/RakLibIpc/zipball/ce632ef2c6743e71eddb5dc329c49af6555f90bc",
+                "reference": "ce632ef2c6743e71eddb5dc329c49af6555f90bc",
                 "shasum": ""
             },
             "require": {
                 "php": "^8.0",
                 "php-64bit": "*",
                 "pocketmine/binaryutils": "^0.2.0",
-                "pocketmine/raklib": "^0.15.0"
+                "pocketmine/raklib": "^0.15.0 || ^1.0.0"
             },
             "require-dev": {
-                "phpstan/phpstan": "1.9.17",
+                "phpstan/phpstan": "1.10.1",
                 "phpstan/phpstan-strict-rules": "^1.0.0"
             },
             "type": "library",
@@ -845,9 +845,9 @@
             "description": "Channel-based protocols for inter-thread/inter-process communication with RakLib",
             "support": {
                 "issues": "https://github.com/pmmp/RakLibIpc/issues",
-                "source": "https://github.com/pmmp/RakLibIpc/tree/0.2.0"
+                "source": "https://github.com/pmmp/RakLibIpc/tree/1.0.1"
             },
-            "time": "2023-02-13T13:40:40+00:00"
+            "time": "2024-03-01T15:55:05+00:00"
         },
         {
             "name": "pocketmine/snooze",
@@ -1072,16 +1072,16 @@
         },
         {
             "name": "symfony/filesystem",
-            "version": "v6.4.3",
+            "version": "v6.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
-                "reference": "7f3b1755eb49297a0827a7575d5d2b2fd11cc9fb"
+                "reference": "9919b5509ada52cc7f66f9a35c86a4a29955c9d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/filesystem/zipball/7f3b1755eb49297a0827a7575d5d2b2fd11cc9fb",
-                "reference": "7f3b1755eb49297a0827a7575d5d2b2fd11cc9fb",
+                "url": "https://api.github.com/repos/symfony/filesystem/zipball/9919b5509ada52cc7f66f9a35c86a4a29955c9d3",
+                "reference": "9919b5509ada52cc7f66f9a35c86a4a29955c9d3",
                 "shasum": ""
             },
             "require": {
@@ -1115,7 +1115,7 @@
             "description": "Provides basic utilities for the filesystem",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/filesystem/tree/v6.4.3"
+                "source": "https://github.com/symfony/filesystem/tree/v6.4.6"
             },
             "funding": [
                 {
@@ -1131,7 +1131,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-01-23T14:51:35+00:00"
+            "time": "2024-03-21T19:36:20+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
