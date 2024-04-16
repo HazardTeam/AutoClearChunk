@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (c) 2021-2023 HazardTeam
+ * Copyright (c) 2021-2024 HazardTeam
  *
  * For the full copyright and license information, please view
  * the LICENSE.md file that was distributed with this source code.
@@ -18,9 +18,11 @@ use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\plugin\PluginOwned;
 use pocketmine\utils\TextFormat;
+
 use function sprintf;
 
-class ClearAllChunkCommand extends Command implements PluginOwned {
+class ClearAllChunkCommand extends Command implements PluginOwned
+{
 	public function __construct(
 		private AutoClearChunk $plugin
 	) {
@@ -28,30 +30,34 @@ class ClearAllChunkCommand extends Command implements PluginOwned {
 		$this->setPermission('autoclearchunk.command.clearallchunk');
 	}
 
-	public function execute(CommandSender $sender, string $commandLabel, array $args) : bool {
+	public function execute(CommandSender $sender, string $commandLabel, array $args) : bool
+	{
 		if (!$this->testPermission($sender)) {
 			return false;
 		}
 
 		$plugin = $this->getOwningPlugin();
-		$plugin->clearAllChunk(function (int $cleared) use ($sender, $plugin) {
+		$plugin->clearAllChunk(static function (int $cleared) use ($sender, $plugin) : void {
 			$message = sprintf(
 				TextFormat::colorize($plugin->getClearAllChunkMessage()),
 				$cleared
 			);
 			$sender->sendMessage($message);
 
-			$broadcastMessage = sprintf(
-				TextFormat::colorize($plugin->getClearAllChunkBroadcastMessage()),
-				$cleared
-			);
-			$plugin->getServer()->broadcastMessage($broadcastMessage);
+			if ($plugin->isBroadcastEnabled()) {
+				$broadcastMessage = sprintf(
+					TextFormat::colorize($plugin->getClearAllChunkBroadcastMessage()),
+					$cleared
+				);
+				$plugin->getServer()->broadcastMessage($broadcastMessage);
+			}
 		});
 
 		return true;
 	}
 
-	public function getOwningPlugin() : AutoClearChunk {
+	public function getOwningPlugin() : AutoClearChunk
+	{
 		return $this->plugin;
 	}
 }

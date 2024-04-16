@@ -52,6 +52,9 @@ clearallchunk-message: "&aSuccessfully cleared %d chunks in all worlds"
 # Default: "&e%d chunks have been cleared in all worlds"
 clearallchunk-broadcast-message: "&e%d chunks have been cleared in all worlds"
 
+# Enable or Disable Message broadcast to all players when chunk are cleared
+broadcast-message: true
+
 # List of worlds that are blacklisted and won't be cleared
 # Add the names of any worlds you want to exclude from the clearing process.
 # Default: []
@@ -70,6 +73,7 @@ The plugin configuration file (`config.yml`) allows you to customize various asp
 - `clearchunk-broadcast-message` (string): Customize the message broadcasted to all players when chunks are cleared using the `/clearchunk` command.
 - `clearallchunk-message` (string): Customize the message sent to players when chunks are cleared using the `/clearallchunk` command.
 - `clearallchunk-broadcast-message` (string): Customize the message broadcasted to all players when chunks are cleared using the `/clearallchunk` command.
+- `broadcast-message` (boolean): Set this option to `true` if you want to enable the broadcasting message when Chunk Cleared
 - `blacklisted-worlds` (array): Specify a list of worlds to exclude from chunk clearing. Add world names as individual array items.
 
 You can edit the `config.yml` file using a text editor to adjust the plugin's behavior, customize messages, and define the worlds where chunk clearing should be applied.

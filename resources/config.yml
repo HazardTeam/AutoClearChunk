@@ -35,6 +35,9 @@ clearallchunk-message: "&aSuccessfully cleared %d chunks in all worlds"
 # Default: "&e%d chunks have been cleared in all worlds"
 clearallchunk-broadcast-message: "&e%d chunks have been cleared in all worlds"
 
+# Enable or Disable Message broadcast to all players when chunk are cleared
+broadcast-message: true
+
 # List of worlds that are blacklisted and won't be cleared
 # Add the names of any worlds you want to exclude from the clearing process.
 # Default: []

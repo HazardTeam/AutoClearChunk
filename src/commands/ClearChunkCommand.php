@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (c) 2021-2023 HazardTeam
+ * Copyright (c) 2021-2024 HazardTeam
  *
  * For the full copyright and license information, please view
  * the LICENSE.md file that was distributed with this source code.
@@ -19,11 +19,13 @@ use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\plugin\PluginOwned;
 use pocketmine\utils\TextFormat;
+
 use function count;
 use function implode;
 use function sprintf;
 
-class ClearChunkCommand extends Command implements PluginOwned {
+class ClearChunkCommand extends Command implements PluginOwned
+{
 	public function __construct(
 		private AutoClearChunk $plugin
 	) {
@@ -31,20 +33,21 @@ class ClearChunkCommand extends Command implements PluginOwned {
 		$this->setPermission('autoclearchunk.command.clearchunk');
 	}
 
-	public function execute(CommandSender $sender, string $commandLabel, array $args) : bool {
+	public function execute(CommandSender $sender, string $commandLabel, array $args) : bool
+	{
 		if (!$this->testPermission($sender)) {
 			return false;
 		}
 
 		$world = (count($args) > 0) ? implode(' ', $args) : (($sender instanceof Player) ? $sender->getWorld()->getFolderName() : null);
 
-		if ($world === null) {
+		if (null === $world) {
 			$sender->sendMessage(TextFormat::RED . 'Please input a world name.');
 			return false;
 		}
 
 		$plugin = $this->getOwningPlugin();
-		$plugin->clearChunk($world, function (int $cleared) use ($sender, $plugin, $world) {
+		$plugin->clearChunk($world, static function (int $cleared) use ($sender, $plugin, $world) : void {
 			$message = sprintf(
 				TextFormat::colorize($plugin->getClearChunkMessage()),
 				$cleared,
@@ -52,18 +55,21 @@ class ClearChunkCommand extends Command implements PluginOwned {
 			);
 			$sender->sendMessage($message);
 
-			$broadcastMessage = sprintf(
-				TextFormat::colorize($plugin->getClearChunkBroadcastMessage()),
-				$cleared,
-				$world
-			);
-			$plugin->getServer()->broadcastMessage($broadcastMessage);
+			if ($plugin->isBroadcastEnabled()) {
+				$broadcastMessage = sprintf(
+					TextFormat::colorize($plugin->getClearChunkBroadcastMessage()),
+					$cleared,
+					$world
+				);
+				$plugin->getServer()->broadcastMessage($broadcastMessage);
+			}
 		});
 
 		return true;
 	}
 
-	public function getOwningPlugin() : AutoClearChunk {
+	public function getOwningPlugin() : AutoClearChunk
+	{
 		return $this->plugin;
 	}
 }
