@@ -6,6 +6,6 @@ projects:
     path: ""
     icon: "icon.png"
     libs:
-      - src: LatamPMDevs/UpdateNotifier/UpdateNotifier
+      - src: ifera-mc/UpdateNotifier/UpdateNotifier
         version: ^3.0.0
 ...
