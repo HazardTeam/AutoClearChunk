@@ -19,13 +19,11 @@ use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\plugin\PluginOwned;
 use pocketmine\utils\TextFormat;
-
 use function count;
 use function implode;
 use function sprintf;
 
-class ClearChunkCommand extends Command implements PluginOwned
-{
+class ClearChunkCommand extends Command implements PluginOwned {
 	public function __construct(
 		private AutoClearChunk $plugin
 	) {
@@ -33,21 +31,20 @@ class ClearChunkCommand extends Command implements PluginOwned
 		$this->setPermission('autoclearchunk.command.clearchunk');
 	}
 
-	public function execute(CommandSender $sender, string $commandLabel, array $args) : bool
-	{
+	public function execute(CommandSender $sender, string $commandLabel, array $args) : bool {
 		if (!$this->testPermission($sender)) {
 			return false;
 		}
 
 		$world = (count($args) > 0) ? implode(' ', $args) : (($sender instanceof Player) ? $sender->getWorld()->getFolderName() : null);
 
-		if (null === $world) {
+		if ($world === null) {
 			$sender->sendMessage(TextFormat::RED . 'Please input a world name.');
 			return false;
 		}
 
 		$plugin = $this->getOwningPlugin();
-		$plugin->clearChunk($world, static function (int $cleared) use ($sender, $plugin, $world) : void {
+		$plugin->clearChunk($world, function (int $cleared) use ($sender, $plugin, $world) : void {
 			$message = sprintf(
 				TextFormat::colorize($plugin->getClearChunkMessage()),
 				$cleared,
@@ -68,8 +65,7 @@ class ClearChunkCommand extends Command implements PluginOwned
 		return true;
 	}
 
-	public function getOwningPlugin() : AutoClearChunk
-	{
+	public function getOwningPlugin() : AutoClearChunk {
 		return $this->plugin;
 	}
 }
