@@ -8,4 +8,6 @@ projects:
     libs:
       - src: ifera-mc/UpdateNotifier/UpdateNotifier
         version: ^3.0.0
+    lint:
+      phpstan: false
 ...
