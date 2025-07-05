@@ -11,6 +11,11 @@ enable-auto-schedule: true
 # Examples: 1h (1 hour), 30m (30 minutes), 15s (15 seconds)
 clear-interval-duration: 5m30s
 
+# How long a chunk without players should wait before being considered for unloading.
+# Set to 0s to disable grace period and unload instantly (reverts to old behavior).
+# Examples: 30s, 5m, 1h
+chunk-unload-grace-period-duration: "30s" # Example: 30 seconds
+
 # Message displayed when chunks are cleared using the ClearChunk command
 # Use %d placeholder for the number of cleared chunks and %s placeholder for the world name.
 # You can customize the message using color codes.
