@@ -84,9 +84,7 @@ class AutoClearChunk extends PluginBase implements Listener {
 		}
 
 		$this->getScheduler()->scheduleRepeatingTask(
-			new ClosureTask(function () : void {
-				$this->processChunksPendingUnload();
-			}),
+			new ClosureTask(fn () => $this->processChunksPendingUnload()),
 			20 * 5
 		);
 
@@ -237,11 +235,11 @@ class AutoClearChunk extends PluginBase implements Listener {
 	 */
 	private function scheduleAutoClearTask() : void {
 		$this->getScheduler()->scheduleDelayedRepeatingTask(
-			new ClosureTask(fn () => $this->clearAllChunk(function (int $cleared) : void {
+			new ClosureTask(fn () => $this->clearAllChunk(function (int $identifiedCount) : void {
 				if ($this->isBroadcastEnabled()) {
 					$broadcastMessage = sprintf(
 						TextFormat::colorize($this->getClearAllChunkBroadcastMessage()),
-						$cleared
+						$identifiedCount
 					);
 					$this->getServer()->broadcastMessage($broadcastMessage);
 				}
@@ -253,40 +251,61 @@ class AutoClearChunk extends PluginBase implements Listener {
 
 	/**
 	 * Processes chunks that are pending unload, checking if their grace period has expired.
+	 * This is the core logic for actually unloading chunks after their grace period.
 	 */
 	private function processChunksPendingUnload() : void {
 		$currentTime = time();
-		// Iterate using array_keys to safely unset elements during iteration
+		$worldsToClean = [];
+
 		foreach (array_keys($this->chunksPendingUnload) as $worldName) {
 			$world = $this->getServer()->getWorldManager()->getWorldByName($worldName);
 			if ($world === null) {
-				unset($this->chunksPendingUnload[$worldName]); // World no longer loaded
+				// World no longer loaded, remove its entries from pending unload
+				unset($this->chunksPendingUnload[$worldName]);
 				continue;
 			}
 
-			// Iterate over a copy of the inner array to safely unset elements
-			foreach (array_keys($this->chunksPendingUnload[$worldName]) as $chunkHash) {
-				$timestamp = $this->chunksPendingUnload[$worldName][$chunkHash];
+			$chunksToUnload = [];
+			$chunksToKeep = [];
 
+			// Iterate over a copy of the inner array to safely modify it
+			foreach ($this->chunksPendingUnload[$worldName] as $chunkHash => $timestamp) {
 				World::getXZ($chunkHash, $chunkX, $chunkZ);
 
 				// Check if chunk has players again, or if it's already unloaded by another process
+				// If players re-entered or chunk is already gone, don't unload it.
 				if (count($world->getChunkPlayers($chunkX, $chunkZ)) > 0 || !$world->isChunkLoaded($chunkX, $chunkZ)) {
-					unset($this->chunksPendingUnload[$worldName][$chunkHash]); // Players re-entered or chunk already gone
+					// This chunk is no longer a candidate for unload
+					$chunksToKeep[$chunkHash] = $timestamp;
 					continue;
 				}
 
 				if ($currentTime - $timestamp >= $this->chunkUnloadGracePeriod) {
-					// Grace period expired, unload the chunk
-					$world->unloadChunk($chunkX, $chunkZ);
-					unset($this->chunksPendingUnload[$worldName][$chunkHash]);
+					// Grace period expired, mark for unload
+					$chunksToUnload[] = ['world' => $world, 'chunkX' => $chunkX, 'chunkZ' => $chunkZ];
+				} else {
+					// Grace period not expired yet, keep it in the list
+					$chunksToKeep[$chunkHash] = $timestamp;
 				}
 			}
 
-			// After iterating through all chunks in a world, check if the world's pending list is empty
-			if (count($this->chunksPendingUnload[$worldName]) === 0) {
-				unset($this->chunksPendingUnload[$worldName]);
+			// Perform actual unloads (this must happen on the main thread)
+			foreach ($chunksToUnload as $chunkData) {
+				$chunkData['world']->unloadChunk($chunkData['chunkX'], $chunkData['chunkZ']);
 			}
+
+			// Update the chunksPendingUnload for this world with only those that remain
+			$this->chunksPendingUnload[$worldName] = $chunksToKeep;
+
+			// If after processing, the world's pending list is empty, mark it for removal from the main list
+			if (count($this->chunksPendingUnload[$worldName]) === 0) {
+				$worldsToClean[] = $worldName;
+			}
+		}
+
+		// Clean up worlds that no longer have pending chunks
+		foreach ($worldsToClean as $worldName) {
+			unset($this->chunksPendingUnload[$worldName]);
 		}
 	}
 
@@ -300,11 +319,13 @@ class AutoClearChunk extends PluginBase implements Listener {
 
 	/**
 	 * Clears all chunks in the configured worlds.
+	 * This method identifies chunks to be unloaded and adds them to the pending unload list.
+	 * The actual unloading happens in `processChunksPendingUnload()`.
 	 *
-	 * @param callable|null $callback optional callback function to be executed after clearing
+	 * @param callable|null $callback optional callback function to be executed after identifying chunks to clear
 	 */
 	public function clearAllChunk(?callable $callback = null) : void {
-		$clearedCount = 0;
+		$identifiedCount = 0;
 
 		foreach ($this->worlds as $worldName) {
 			$world = $this->getServer()->getWorldManager()->getWorldByName($worldName);
@@ -319,28 +340,33 @@ class AutoClearChunk extends PluginBase implements Listener {
 					World::getXZ($chunkHash, $chunkX, $chunkZ);
 					if (count($world->getChunkPlayers($chunkX, $chunkZ)) === 0) {
 						// Add to pending unload list with current timestamp
-						$this->chunksPendingUnload[$worldName][$chunkHash] = time();
-						++$clearedCount;
+						// Only add if not already in the pending list to avoid resetting grace period.
+						if (!isset($this->chunksPendingUnload[$worldName][$chunkHash])) {
+							$this->chunksPendingUnload[$worldName][$chunkHash] = time();
+							++$identifiedCount;
+						}
 					}
 				}
 			}
 		}
 
 		if ($callback !== null) {
-			$callback($clearedCount);
+			$callback($identifiedCount);
 		}
 	}
 
 	/**
 	 * Clears chunks in a specific world.
+	 * This method identifies chunks to be unloaded and adds them to the pending unload list.
+	 * The actual unloading happens in `processChunksPendingUnload()`.
 	 *
 	 * @param string|World  $world    the world object or the name of the world to clear chunks from
-	 * @param callable|null $callback optional callback function to be executed after clearing
+	 * @param callable|null $callback optional callback function to be executed after identifying chunks to clear
 	 *
-	 * @return bool true if chunks were cleared, false otherwise
+	 * @return bool true if chunks were identified, false otherwise (e.g., world not found)
 	 */
 	public function clearChunk(string|World $world, ?callable $callback = null) : bool {
-		$clearedCount = 0;
+		$identifiedCount = 0;
 
 		if (is_string($world)) {
 			$world = $this->getServer()->getWorldManager()->getWorldByName($world);
@@ -362,13 +388,16 @@ class AutoClearChunk extends PluginBase implements Listener {
 			World::getXZ($chunkHash, $chunkX, $chunkZ);
 			if (count($world->getChunkPlayers($chunkX, $chunkZ)) === 0) {
 				// Add to pending unload list with current timestamp
-				$this->chunksPendingUnload[$worldName][$chunkHash] = time();
-				++$clearedCount;
+				// Only add if not already in the pending list to avoid resetting grace period.
+				if (!isset($this->chunksPendingUnload[$worldName][$chunkHash])) {
+					$this->chunksPendingUnload[$worldName][$chunkHash] = time();
+					++$identifiedCount;
+				}
 			}
 		}
 
 		if ($callback !== null) {
-			$callback($clearedCount);
+			$callback($identifiedCount);
 		}
 
 		return true;

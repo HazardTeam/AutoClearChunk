@@ -34,17 +34,17 @@ class ClearAllChunkCommand extends Command implements PluginOwned {
 		}
 
 		$plugin = $this->getOwningPlugin();
-		$plugin->clearAllChunk(function (int $cleared) use ($sender, $plugin) : void {
+		$plugin->clearAllChunk(function (int $identifiedCount) use ($sender, $plugin) : void {
 			$message = sprintf(
 				TextFormat::colorize($plugin->getClearAllChunkMessage()),
-				$cleared
+				$identifiedCount
 			);
 			$sender->sendMessage($message);
 
 			if ($plugin->isBroadcastEnabled()) {
 				$broadcastMessage = sprintf(
 					TextFormat::colorize($plugin->getClearAllChunkBroadcastMessage()),
-					$cleared
+					$identifiedCount
 				);
 				$plugin->getServer()->broadcastMessage($broadcastMessage);
 			}

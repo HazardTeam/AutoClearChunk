@@ -44,10 +44,10 @@ class ClearChunkCommand extends Command implements PluginOwned {
 		}
 
 		$plugin = $this->getOwningPlugin();
-		$plugin->clearChunk($world, function (int $cleared) use ($sender, $plugin, $world) : void {
+		$plugin->clearChunk($world, function (int $identifiedCount) use ($sender, $plugin, $world) : void {
 			$message = sprintf(
 				TextFormat::colorize($plugin->getClearChunkMessage()),
-				$cleared,
+				$identifiedCount,
 				$world
 			);
 			$sender->sendMessage($message);
@@ -55,7 +55,7 @@ class ClearChunkCommand extends Command implements PluginOwned {
 			if ($plugin->isBroadcastEnabled()) {
 				$broadcastMessage = sprintf(
 					TextFormat::colorize($plugin->getClearChunkBroadcastMessage()),
-					$cleared,
+					$identifiedCount,
 					$world
 				);
 				$plugin->getServer()->broadcastMessage($broadcastMessage);
