@@ -6,57 +6,70 @@
 A PocketMine-MP plugin that automatically clears chunks in specified worlds at regular intervals.
 
 # Features
-- Automatic clearing of chunks in configured worlds.
-- Configurable clearing interval to suit your server's needs.
-- Command-based chunk clearing options for manual control.
-- Customizable messages for different events to enhance player experience.
-- Blacklist support for excluding specific worlds from chunk clearing.
-- Auto-update notifier to keep the plugin up to date with the latest releases.
+- **Automated Chunk Management**: Automatically clears unloaded chunks in configured worlds to optimize server performance.
+- **Flexible Scheduling**: Allows for a configurable interval to automatically clear chunks, adapting to your server's specific needs.
+- **Graceful Unloading**: Includes a configurable grace period, ensuring chunks without players remain loaded for a specified duration before being considered for unloading.
+- **Manual Control**: Provides commands to manually trigger chunk clearing for immediate action.
+- **Customizable Player Feedback**: Offers configurable messages for different events, enhancing the player experience with clear notifications.
+- **World Exclusion**: Supports a blacklist to exclude specific worlds from the automatic chunk clearing process.
+- **Stay Up-to-Date**: Features an auto-update notifier to inform you of the latest plugin releases.
 
 # Default Config
 ``` yaml
 # AutoClearChunk Configuration
 
-# Enable Auto Schedule
+# Enable Auto-Schedule
 # Determines whether the plugin automatically schedules the task to clear unloaded chunks at the specified interval.
-# Set to 'true' to enable auto schedule, 'false' to disable.
+# Set to 'true' to enable auto-scheduling, 'false' to disable.
 enable-auto-schedule: true
 
 # Clear Interval Duration
-# Determines the time interval at which unloaded chunks are automatically cleared.
-# The value should be specified as a duration format string.
+# Defines the time interval at which unloaded chunks are automatically cleared.
+# The value should be specified in a duration format.
 # Examples: 1h (1 hour), 30m (30 minutes), 15s (15 seconds)
 clear-interval-duration: 5m30s
 
-# Message displayed when chunks are cleared using the ClearChunk command
-# Use %d placeholder for the number of cleared chunks and %s placeholder for the world name.
-# You can customize the message using color codes.
-# Default: "Successfully cleared %d chunks in world %s"
+# Chunk Unload Grace Period Duration
+# Specifies how long a chunk without players should wait before being considered for unloading.
+# Set to "0s" to disable the grace period and unload instantly (reverts to old behavior).
+# Examples: 30s, 5m, 1h
+chunk-unload-grace-period-duration: "30s"
+
+# Clear Chunk Message
+# Message displayed when chunks are cleared using the /clearchunk command.
+# Use %d as a placeholder for the number of cleared chunks and %s for the world name.
+# Color codes are supported.
+# Default: "&aSuccessfully cleared %d chunks in world %s"
 clearchunk-message: "&aSuccessfully cleared %d chunks in world %s"
 
-# Message broadcasted to all players when chunks are cleared using the ClearChunk command
-# Use %d placeholder for the number of cleared chunks and %s placeholder for the world name.
-# You can customize the message using color codes.
+# Clear Chunk Broadcast Message
+# Message broadcast to all players when chunks are cleared using the /clearchunk command.
+# Use %d as a placeholder for the number of cleared chunks and %s for the world name.
+# Color codes are supported.
 # Default: "&e%d chunks have been cleared in world %s"
 clearchunk-broadcast-message: "&e%d chunks have been cleared in world %s"
 
-# Message displayed when chunks are cleared using the ClearAllChunk command
-# Use %d placeholder for the number of cleared chunks.
-# You can customize the message using color codes.
-# Default: "Successfully cleared %d chunks in all worlds"
+# Clear All Chunk Message
+# Message displayed when chunks are cleared using the /clearallchunk command.
+# Use %d as a placeholder for the number of cleared chunks.
+# Color codes are supported.
+# Default: "&aSuccessfully cleared %d chunks in all worlds"
 clearallchunk-message: "&aSuccessfully cleared %d chunks in all worlds"
 
-# Message broadcasted to all players when chunks are cleared using the ClearAllChunk command
-# Use %d placeholder for the number of cleared chunks.
-# You can customize the message using color codes.
+# Clear All Chunk Broadcast Message
+# Message broadcast to all players when chunks are cleared using the /clearallchunk command.
+# Use %d as a placeholder for the number of cleared chunks.
+# Color codes are supported.
 # Default: "&e%d chunks have been cleared in all worlds"
 clearallchunk-broadcast-message: "&e%d chunks have been cleared in all worlds"
 
-# Enable or Disable Message broadcast to all players when chunk are cleared
+# Enable Broadcast Messages
+# Set to 'true' to enable broadcasting messages to all players when chunks are cleared, 'false' to disable.
 broadcast-message: true
 
-# List of worlds that are blacklisted and won't be cleared
-# Add the names of any worlds you want to exclude from the clearing process.
+# Blacklisted Worlds
+# List of world names that will be excluded from the chunk clearing process.
+# Add the exact names of any worlds you want to exclude.
 # Default: []
 blacklisted-worlds:
   - your_world
@@ -69,6 +82,7 @@ The plugin configuration file (`config.yml`) allows you to customize various asp
 
 - `enable-auto-schedule` (boolean): Set this option to `true` if you want to enable the automatic chunk clearing schedule. If set to `false`, chunks will only be cleared manually using commands.
 - `clear-interval-duration` (string): Specify the duration interval at which chunks should be cleared automatically. The duration should be specified in the format of `1h30m` for 1 hour and 30 minutes.
+- `chunk-unload-grace-period-duration` (string): Defines how long a chunk without players should wait before being considered for unloading. Set to "0s" to disable the grace period and unload instantly. Examples: `30s, 5m, 1h`.
 - `clearchunk-message` (string): Customize the message sent to players when chunks are cleared using the `/clearchunk` command.
 - `clearchunk-broadcast-message` (string): Customize the message broadcasted to all players when chunks are cleared using the `/clearchunk` command.
 - `clearallchunk-message` (string): Customize the message sent to players when chunks are cleared using the `/clearallchunk` command.
